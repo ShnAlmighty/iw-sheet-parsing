@@ -35,9 +35,37 @@ function processRetailer(retailer) {
     content_post_status: retailer['V']
   };
 
+  //Note: Kept the initial version of grouping logic here
+  // const grouped_data = {
+  //   id: nanoid(10), //Generating unique id for each retailer for later use
+  //   content_post_id: retailer['H'],
+  //   directory_category: retailer['A'],
+  //   content_post_title: retailer['W'],
+  //   content_children_count: retailer['B'],
+  //   contact_details:{
+  //     directory_contact__email: retailer['C'],
+  //     directory_contact__phone: retailer['F'],
+  //     directory_contact__fax: retailer['D'],
+  //     directory_contact__mobile: retailer['E'],
+  //     directory_contact__website: retailer['G'],
+  //   },
+  //   content_post_slug: retailer['I'],
+  //   location_details:{
+  //     directory_location__street: retailer['K'],
+  //     directory_location__city: retailer['L'],
+  //     directory_location__country: retailer['M'],
+  //     directory_location__address: retailer['N'],
+  //     directory_location__lat: retailer['O'],
+  //     directory_location__lng: retailer['P'],
+  //     directory_location__zip: retailer['Q'],
+  //     directory_location__state: retailer['R'],
+  //   },
+  //   content_post_status: retailer['V']
+  // };
+
   const refined_data = {};
 
-  for(key in data){
+  for(key in data){ //Note: for using the grouped data, after un-commenting the grouped_data object above, replace data with grouped_data object wherever used in the loop.
     // console.log("KEY=", data[key])
     let val = data[key];
     if(typeof(data[key]) == 'string'){
