@@ -1,5 +1,4 @@
 const xlsx = require('xlsx');
-const JSONStream = require('json-stream');
 
 const {nanoid} = require('nanoid');
 
@@ -10,23 +9,6 @@ const workbook = xlsx.readFile(spreadsheetPath);
 const sheetName = workbook.SheetNames[0];
 const sheet = workbook.Sheets[sheetName];
 
-
-// const schema = {
-//   id: String,
-//   content_post_id: String,
-//   content_post_title: String,
-//   directory_category: String,
-//   directory_contact__phone: String,
-//   directory_location__street: String,
-//   directory_location__city: String,
-//   directory_location__country: String,
-//   directory_location__address: String,
-//   directory_location__lat: String,
-//   directory_location__lng: String,
-//   directory_location__zip: String,
-//   directory_location__state: String
-// };
-
 function processRetailer(retailer) {
   // console.log("Retailer: ", retailer);
 
@@ -34,6 +16,12 @@ function processRetailer(retailer) {
     id: nanoid(10), //Generating unique id for each retailer for later use
     content_post_id: retailer['H'],
     content_post_title: retailer['W'],
+    content_children_count: retailer['B'],
+    directory_contact__email: retailer['C'],
+    directory_contact__fax: retailer['D'],
+    directory_contact__mobile: retailer['E'],
+    directory_contact__website: retailer['G'],
+    content_post_slug: retailer['I'],
     directory_category: retailer['A'],
     directory_contact__phone: retailer['F'],
     directory_location__street: retailer['K'],
@@ -43,29 +31,32 @@ function processRetailer(retailer) {
     directory_location__lat: retailer['O'],
     directory_location__lng: retailer['P'],
     directory_location__zip: retailer['Q'],
-    directory_location__state: retailer['R']
+    directory_location__state: retailer['R'],
+    content_post_status: retailer['V']
   };
 
-  return data;
+  const refined_data = {};
+
+  for(key in data){
+    // console.log("KEY=", data[key])
+    let val = data[key];
+    if(typeof(data[key]) == 'string'){
+      val = val.trim()
+    }
+    refined_data[key] = val;
+  }
+
+  return refined_data;
 }
 
 function main(){
-  const jsonStream = new JSONStream();
-
-  // Pipe the JSON stream to stdout
-  jsonStream.pipe(process.stdout);
-
   const rows = xlsx.utils.sheet_to_json(sheet, { header: 'A' });
-
   for (let i = 1; i < rows.length; i++) {
     const customer = rows[i];
     const data = processRetailer(customer);
     const dataStr = JSON.stringify(data);
-    jsonStream.write(JSON.stringify(dataStr) + '\n');
-    jsonStream.write('\n\n');
+    process.stdout.write(JSON.stringify(dataStr) + '\n');
   }
-  jsonStream.end();
-
 }
 
 main();
