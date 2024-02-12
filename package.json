@@ -1,0 +1,17 @@
+{
+  "name": "iwarranty_v2",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "json-stream": "^1.0.0",
+    "nanoid": "^3.3.7",
+    "xlsx": "^0.18.5"
+  }
+}
